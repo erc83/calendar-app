@@ -1,13 +1,16 @@
 import React, { useState } from 'react'
 import { Calendar, momentLocalizer } from 'react-big-calendar'
 import moment from 'moment'
-import 'moment/locale/es'    // para cambiar el idioma en moment
 
 import Navbar from '../ui/Navbar'
 import { messages } from '../helpers/calendar-messages-es'
 import CalendarEvent from './CalendarEvent'
+import { CalendarModal } from './CalendarModal'
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
+import 'moment/locale/es'    // para cambiar el idioma en moment
+import './style.css'
+
 
 moment.locale('es');    // para cambiar el idioma en moment de los dias y los meses
 
@@ -27,7 +30,7 @@ const myEventsList = [{
 
 const CalendarScreen = () => {
 
-  const [lastView, setLastView] = useState( localStorage.getItem('lastView' || 'month' ) )
+  const [lastView, setLastView] = useState( localStorage.getItem('lastView') || 'month'  )
   
   const onDoubleClick = (e) => {
     console.log(e)
@@ -38,7 +41,7 @@ const CalendarScreen = () => {
   }
 
   const onViewChange =(e) => {
-    //console.log(e)  
+    console.log(e)  
     setLastView(e)
     localStorage.setItem('lastView', e)
   }
@@ -74,11 +77,14 @@ const CalendarScreen = () => {
           onDoubleClickEvent={ onDoubleClick }
           onSelectEvent={ onSelectEvent }
           onView={ onViewChange }
-          view={ lastView }
+          defaultView = { lastView }
           components={{
             event: CalendarEvent     // se envia como referencia el componente
           }}
         />
+
+          
+        <CalendarModal />
    </div> 
   
   )
