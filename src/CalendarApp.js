@@ -1,13 +1,16 @@
 import React from 'react'
-// import CalendarScreen from './components/calendar/CalendarScreen'
+
+import { Provider } from "react-redux";
+import { store } from './store/store';
+
 import AppRouter from "./router/AppRouter";
 
 
 const CalendarApp = () => {
   return (
-    <div>
-        <h1><AppRouter /> </h1>
-    </div>
+    <Provider store={ store }> 
+        <AppRouter />
+    </Provider>
   )
 }
 

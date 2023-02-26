@@ -1,0 +1,9 @@
+
+//  solo para tener un objeto para tener centralizado todos los tipos de mis acciones para no escribirlos como string 
+
+export const types = {
+
+    uiOpenModal: '[ui] Open modal',
+    uiCloseModal: '[ui] Close modal'
+
+}
