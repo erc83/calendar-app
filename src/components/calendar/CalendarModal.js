@@ -6,6 +6,7 @@ import moment from 'moment';
 import Modal from 'react-modal';
 import DateTimePicker from 'react-datetime-picker';
 import Swal from 'sweetalert2'                   
+import { eventAddNew } from '../../actions/eventsCalendar';
 
 const customStyles = {  
     content: {
@@ -25,9 +26,7 @@ const nowPlus1 = now.clone().add( 1, 'hours' );
 
 export const CalendarModal = () => {
 
-    // const state = useSelector( state => state );               // tenemos el state completo de la app 
-    // console.log(state.ui.modalOpen)                           // para llegar a la propiedad false
-    const { modalOpen } = useSelector( state => state.ui );      //1  asi podemos desestructurar modalOpen de ui en el state 
+    const { modalOpen } = useSelector( state => state.ui );
     
     const dispatch = useDispatch();
 
@@ -78,6 +77,7 @@ export const CalendarModal = () => {
         //TODO: cerrar el modal                 
     }
 
+
     const handleSubmitForm = (e) => {     
       e.preventDefault();
       //console.log( formValues )
@@ -90,7 +90,7 @@ export const CalendarModal = () => {
       
       if(momentStart.isSameOrAfter( momentEnd ) ){   
         //console.log('Fecha 2 debe de ser mayor')
-        Swal.fire('Error', 'La fecha fin debe de ser mayor a la fecha de inicio', 'error') //5
+        Swal.fire('Error', 'La fecha fin debe de ser mayor a la fecha de inicio', 'error')
         return;
       }
 
@@ -100,6 +100,17 @@ export const CalendarModal = () => {
       }
 
       //TODO: falta realizar la grabacion en la base de datos
+      // realizamos temporalmente
+      
+      dispatch( eventAddNew({
+        ...formValues,
+        id: new Date().getTime(),
+        user: {
+          _id: '123',
+          name: 'Eric'
+        }
+      }) )
+
 
       setTitleValid(true);                          
       closeModal();
