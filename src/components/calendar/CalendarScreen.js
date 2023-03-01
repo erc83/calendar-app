@@ -3,11 +3,13 @@ import { Calendar, momentLocalizer } from 'react-big-calendar'
 import moment from 'moment'
 import { useDispatch } from "react-redux";          
 import { uiOpenModal } from '../../actions/ui';     
+import { eventSetActive } from '../../actions/eventsCalendar';
 
 import Navbar from '../ui/Navbar'
 import { messages } from '../helpers/calendar-messages-es'
 import CalendarEvent from './CalendarEvent'
 import { CalendarModal } from './CalendarModal'
+import AddNewFab from '../ui/AddNewFab';
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'moment/locale/es'    
@@ -40,8 +42,10 @@ const CalendarScreen = () => {
     dispatch( uiOpenModal() )      
   }
 
-  const onSelectEvent = (e) => {
-    console.log(e)
+  const onSelectEvent = (e) => {  // aqui se agrega el dispatch para cambiar el evento activo
+    dispatch( eventSetActive( e ) )
+    dispatch( uiOpenModal() ) 
+    //console.log(e)
   }
 
   const onViewChange =(e) => {
@@ -85,6 +89,8 @@ const CalendarScreen = () => {
             event: CalendarEvent    
           }}
         />
+
+        <AddNewFab />
 
         <CalendarModal />
    </div> 
