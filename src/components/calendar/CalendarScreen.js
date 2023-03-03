@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Calendar, momentLocalizer } from 'react-big-calendar'
 import moment from 'moment'
-import { useDispatch } from "react-redux";          
+import { useDispatch, useSelector } from "react-redux";          
 import { uiOpenModal } from '../../actions/ui';     
 import { eventSetActive } from '../../actions/eventsCalendar';
 
@@ -20,21 +20,11 @@ moment.locale('es');
 
 const localizer = momentLocalizer(moment);
 
-const myEventsList = [{
-  title: 'Cumpleaños de Elías',
-  start: moment().toDate(),    //new Date()
-  end: moment().add( 2, 'hours').toDate(),
-  bgcolor: '#fafafa',
-  notes: 'Comprar el Pastel',
-  user: {
-    _id:123,
-    name: 'Eric'
-  }
-}]
-
 const CalendarScreen = () => {
 
   const dispatch = useDispatch();
+
+  const { events } = useSelector( state => state.calendar )
 
   const [lastView, setLastView] = useState( localStorage.getItem('lastView') || 'month'  )
   
@@ -42,10 +32,9 @@ const CalendarScreen = () => {
     dispatch( uiOpenModal() )      
   }
 
-  const onSelectEvent = (e) => {  // aqui se agrega el dispatch para cambiar el evento activo
+  const onSelectEvent = (e) => {  
     dispatch( eventSetActive( e ) )
-    dispatch( uiOpenModal() ) 
-    //console.log(e)
+
   }
 
   const onViewChange =(e) => {
@@ -76,7 +65,7 @@ const CalendarScreen = () => {
 
         <Calendar
           localizer={localizer}
-          events={ myEventsList }
+          events={ events }
           startAccessor="start"
           endAccessor="end"
           messages={ messages }
