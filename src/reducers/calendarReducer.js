@@ -57,6 +57,16 @@ export const calendarReducer = ( state = initialState, action ) => {
                     e => ( e.id === action.payload.id ) ? action.payload : e 
                 )
             }
+
+        // no tengo action donde se tiene la informacion que se necesita para sabar el id de la nota activa
+        case types.eventDeleted:
+            return {
+                ...state,
+                events: state.events.filter(
+                    e => ( e.id !== state.activeEvent.id )  // si es asi se van a regresar
+                ),
+                activeEvent: null
+            }
     
         default:
             return state;

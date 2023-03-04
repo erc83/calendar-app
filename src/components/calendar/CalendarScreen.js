@@ -3,13 +3,14 @@ import { Calendar, momentLocalizer } from 'react-big-calendar'
 import moment from 'moment'
 import { useDispatch, useSelector } from "react-redux";          
 import { uiOpenModal } from '../../actions/ui';     
-import { eventSetActive } from '../../actions/eventsCalendar';
+import { eventSetActive, eventClearActiveEvent } from '../../actions/eventsCalendar';
 
 import Navbar from '../ui/Navbar'
 import { messages } from '../helpers/calendar-messages-es'
 import CalendarEvent from './CalendarEvent'
 import { CalendarModal } from './CalendarModal'
 import AddNewFab from '../ui/AddNewFab';
+import DeleteEventFab from '../ui/DeleteEventFab';
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'moment/locale/es'    
@@ -24,7 +25,7 @@ const CalendarScreen = () => {
 
   const dispatch = useDispatch();
 
-  const { events } = useSelector( state => state.calendar )
+  const { events, activeEvent } = useSelector( state => state.calendar )
 
   const [lastView, setLastView] = useState( localStorage.getItem('lastView') || 'month'  )
   
@@ -38,9 +39,15 @@ const CalendarScreen = () => {
   }
 
   const onViewChange =(e) => {
-    console.log(e)  
+    //console.log(e)  
     setLastView(e)
     localStorage.setItem('lastView', e)
+  }
+
+  const onSelectSlot = (e) => {
+    // console.log(e)
+    dispatch( eventClearActiveEvent() ); 
+
   }
 
   const eventStyleGetter = ( event, start, end, isSelected ) => {
@@ -72,6 +79,8 @@ const CalendarScreen = () => {
           eventPropGetter={ eventStyleGetter }
           onDoubleClickEvent={ onDoubleClick }
           onSelectEvent={ onSelectEvent }
+          onSelectSlot={ onSelectSlot }   
+          selectable={ true }
           onView={ onViewChange }
           defaultView = { lastView }
           components={{
@@ -80,6 +89,11 @@ const CalendarScreen = () => {
         />
 
         <AddNewFab />
+
+        {
+          ( activeEvent ) && <DeleteEventFab />  // si existe activeEvent muestran DeleteEventFab en caso contrario no se muestra
+        }
+
 
         <CalendarModal />
    </div> 

@@ -26,7 +26,7 @@ const nowPlus1 = now.clone().add( 1, 'hours' );
 
 
 const initEvent = {    
-  title: 'evento',
+  title: '',
   notes: '',
   start: now.toDate(),
   end: nowPlus1.toDate()
@@ -50,7 +50,10 @@ export const CalendarModal = () => {
   useEffect(() => {   
     if( activeEvent ){
       setFormValues( activeEvent )
+    } else {
+      setFormValues( initEvent )  // si es null el activeEvent  entonces se inicializa el modal
     }
+
   }, [activeEvent, setFormValues])  
 
 
@@ -145,7 +148,7 @@ export const CalendarModal = () => {
         overlayClassName='modal-fondo'   
     >
         {/* Inicio contenido Modal */}
-        <h1> Nuevo evento </h1>
+        <h1> { (activeEvent) ? 'Editar evento' : 'Nuevo Evento'}  </h1>
         <hr />
         <form 
           className="container"
@@ -210,7 +213,3 @@ export const CalendarModal = () => {
     </Modal>
   )
 }
-
-
-
-
